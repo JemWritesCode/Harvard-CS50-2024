@@ -1,4 +1,5 @@
 // passes check50 cs50/problems/2024/x/mario/less
+// However, the file must be named mario.c to run the check.
 // passes style50 mario.c
 #include <cs50.h>
 #include <stdio.h>
