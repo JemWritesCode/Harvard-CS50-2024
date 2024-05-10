@@ -2,7 +2,8 @@
 Passes check50 cs50/problems/2024/x/caesar
 
 Encrypt messages using Caesar’s cipher.
-Take a command line argument for the key (non-negative int)
+Take a command line argument for the key
+Turn plaintext into ciphertext.
 */
 
 #include <cs50.h>
@@ -15,9 +16,9 @@ Take a command line argument for the key (non-negative int)
 bool only_digits(string s);
 char rotate(char letter, int key);
 
-int main (int argc, string argv[])
+int main(int argc, string argv[])
 {
-    // argc is program name + arguments. so 2 is one argument
+    // argc is program name + arguments. so arc == 2 is one argument
     // argv[1] is the first argument in the array of arguments, 0 is the program name
     if (argc == 2 && only_digits(argv[1]))
     {
@@ -25,7 +26,7 @@ int main (int argc, string argv[])
         key = atoi(argv[1]);
         string userText = get_string("plaintext: ");
         string cipherText = userText;
-        for(int i = 0, len = strlen(userText); i < len; i++)
+        for (int i = 0, len = strlen(userText); i < len; i++)
         {
             cipherText[i] = rotate(userText[i], key);
         }
@@ -42,18 +43,18 @@ char rotate(char letter, int key)
 {
     if (isalpha(letter))
     {
-        if(islower(letter))
+        if (islower(letter))
         {
-            return (letter -'a' + key) % 26 + 'a';
+            return (letter - 'a' + key) % 26 + 'a';
         }
         else
         {
-            return (letter -'A' + key) % 26 + 'A';
+            return (letter - 'A' + key) % 26 + 'A';
         }
     }
     else
     {
-        return letter; // don't change the letter
+        return letter; // if not alpha don't change the letter
     }
 }
 
