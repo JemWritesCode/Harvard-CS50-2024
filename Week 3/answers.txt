@@ -1,0 +1,18 @@
+In this exercise we are given 3 compiled programs and told to time them against different data sets to determine which sorting algorithm they use
+* Selection Sort (Theta(n squared)))
+* Bubble Sort (O(nsquared), Omega(n))
+* Merge Sort (Theta(n log n))
+===================================
+sort1 uses: Bubble Sort?
+It's significantly faster on Sorted than Reversed or Random.
+
+How do you know?: (reversed10000 takes .222s) && (sorted5000 takes .039s) && (random10k takes .206s)
+
+sort2 uses: Merge Sort
+It's significantly faster than the other two sorts overall
+
+How do you know?: (reversed10000 takes .045s) && (sorted5000 takes .042s) && (random10k takes .042s)
+
+sort3 uses: Selection Sort
+Sorting time is about the same on all 3 data sets.
+How do you know?: (reversed10000 takes .151s) && (sorted5000 takes .134)s && (random10k takes .169s)
