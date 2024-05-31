@@ -268,6 +268,23 @@ bool cycleCheck(pair currentPair)
 // Print the winner of the election
 void print_winner(void)
 {
-    // TODO
-    return;
+    // basically you go through the candidates and if every person that is pointing at them
+    // is false then they are the source because no one beats them.
+    // that's why you flip the [j][i]. we're checking who is pointing at our current i'th candidate
+    // then we print candidates[i] if no one is pointing at them
+ for (int i = 0; i < candidate_count; i++)
+    {
+        int false_count = 0;
+        for (int j = 0; j < candidate_count; j++)
+        {
+            if (locked[j][i] == false)
+            {
+                false_count++;
+                if (false_count == candidate_count)
+                {
+                    printf("%s\n", candidates[i]);
+                }
+            }
+        }
+    }
 }
