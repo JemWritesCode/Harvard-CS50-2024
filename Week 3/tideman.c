@@ -33,6 +33,7 @@ void record_preferences(int ranks[]);
 void add_pairs(void);
 void sort_pairs(void);
 void lock_pairs(void);
+bool cycleCheck(pair currentPair);
 void print_winner(void);
 
 int main(int argc, string argv[])
@@ -207,8 +208,61 @@ void sort_pairs(void)
 // Lock pairs into the candidate graph in order, without creating cycles
 void lock_pairs(void)
 {
-    // TODO
-    return;
+    //locked an array of booleans. locked[j][k] would mean arrow pointing from j to k
+    //at first everything in locked is set to false, this is done in main
+
+    // so we need go go through the now sorted pairs[] array
+    // if != createACycle then set that to true
+    // how do i know if it makes a cycle
+
+    // to know if it has a cycle. lets take a pair like d, a.
+    // so a is the loser. we say is there any locked[a][?]?
+    // if no, safe to lock
+    // if yes, we need to follow the chain down. so who does a beat? we are once again checking
+    // the loser. so there's the recursion right there.
+    // either we go until there are no pairs where the loser of the pair has no other pairs in the locked
+    // array that are already locked.
+    // or we find our way back to the begining of the cycle, so we don't lock.
+
+
+//=================
+    // Go through all of pairs[] to see if each pair should be locked or not.
+    for (int i = 0; i < pair_count; i++)
+    {
+        if (!cycleCheck(pairs[i]))
+        {
+            // if it doesn't create a cycle we can lock it into the graph
+            locked[pairs[i].winner][pairs[i].loser] = true;
+        }
+    }
+}
+
+bool cycleCheck(pair currentPair)
+{
+        // k is used to go through locked[loser][k]
+        // to see if the loser beats anyone
+    for (int k = 0; k < candidate_count; k++)
+    {
+        if (locked[currentPair.loser][k] == true)
+        {
+            // the loser beat someone else.
+            // we need to go further down the chain before we know if it's safe to lock.
+            // so same recursion again
+            if(k == currentPair.winner)
+            {
+                // we have come full circle. this is a cycle.
+                return true;
+            }
+            pair nextPair;
+            nextPair.winner = currentPair.loser;
+            nextPair.loser = k;
+            cycleCheck(nextPair);
+
+        }
+        // if it's not true it's false so it will just go to the next loop of the for loop
+    }
+    // if we got through this whole loop without exiting it then ok to lock it in, there's no cycle
+    return false;
 }
 
 // Print the winner of the election
