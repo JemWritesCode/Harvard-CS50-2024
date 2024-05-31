@@ -1,3 +1,5 @@
+// Solution by JemWritesCode
+//
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
@@ -109,7 +111,7 @@ bool vote(int rank, string name, int ranks[])
         // if the name passed into the vote function matches a candidate in the candidates[] array
         if (strcmp(name, candidates[i]) == 0)
         {
-            // exampe: Rank #2 would be set to the index that represents a candidate (candidate 0 is alice)
+            // exampe: Rank #2 would be set to the index that represents a candidate (ex: candidate 0 is alice)
             ranks[rank] = i;
             return true;
         }
@@ -139,10 +141,17 @@ void record_preferences(int ranks[])
 // Record pairs of candidates where one is preferred over the other
 void add_pairs(void)
 {
+
     for (int i = 0; i < candidate_count; i++)
     {
         for (int k = i + 1; k < candidate_count; k++)
         {
+            // with these if/elseif we don't record ties, they get skipped
+            // [i][k] will be the same pair of candidates as [k][i].
+            // ex Alice vs Bob and then Bob vs Alice. We're taking the higher number
+            // because that means more people prefer that candidate over the other
+            // hence we would have a winner and a loser between those two candidates
+            // by checking these two places in the preferences array
             if (preferences[i][k] > preferences[k][i])
             {
                 pairs[pair_count].winner = i;
@@ -162,8 +171,37 @@ void add_pairs(void)
 // Sort pairs in decreasing order by strength of victory
 void sort_pairs(void)
 {
-    // TODO
-    return;
+    // I opted for Bubble Sort because it's simpler than Merge Sort.
+    // If we are lucky and the pairs array is already sorted we also get Omega(n) which
+    // will beat Selection Sort for speed.
+
+    int swaps = 0;
+    for (int i = 0; i < pair_count - 1; i++)
+    {
+        swaps = 0; //reset each time we're about to go through
+        // after going through this with k once the highest will bubble to the top
+        // but we have to go back to the outer loop to do it again and keep pushing the
+        // next biggest to the top. as i increments we will end up ignoring
+        // the final already sorted elements.
+        for (int k = 0; k < pair_count - i - 1; k++)
+        {
+
+            int pairOneStrength = preferences[pairs[k].winner][pairs[k].loser];
+            int pairTwoStrength = preferences[pairs[k + 1].winner][pairs[k + 1].loser];
+
+            if (pairOneStrength > pairTwoStrength)
+            {
+                pair tempForSwap = pairs[k];
+                pairs[k] = pairs[k+1];
+                pairs[k + 1] = tempForSwap;
+                swaps++;
+            }
+        }
+        if (swaps == 0)
+        {
+            break; // no swaps means it's already sorted
+        }
+    }
 }
 
 // Lock pairs into the candidate graph in order, without creating cycles
