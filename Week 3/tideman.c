@@ -1,5 +1,6 @@
+// Not currently passing Check50
 // Solution by JemWritesCode
-//
+
 #include <cs50.h>
 #include <stdio.h>
 #include <string.h>
